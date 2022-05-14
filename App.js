@@ -1,20 +1,43 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+// import { StyleSheet, Text, View } from "react-native";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { useFonts } from "expo-font";
+import Home from "./screens/home";
+import Details from "./screens/details";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+const stack = createStackNavigator();
+
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: "transparent",
   },
-});
+};
+
+const App = () => {
+  const [loaded] = useFonts({
+    interBold: require("./assets/fonts/Inter-Bold.ttf"),
+    interSemiBold: require("./assets/fonts/Inter-SemiBold.ttf"),
+    interMedium: require("./assets/fonts/Inter-Medium.ttf"),
+    interRegular: require("./assets/fonts/Inter-Regular.ttf"),
+    interLight: require("./assets/fonts/Inter-Light.ttf"),
+  });
+
+  if (!loaded) return null;
+
+  return (
+    <NavigationContainer theme={theme}>
+      <stack.Navigator
+        screenOptions={{ headerShown: false }}
+        initialRouteName="Home"
+      >
+        <stack.Screen name="Home" component={Home} />
+        <stack.Screen name="Details" component={Details} />
+      </stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default App;
